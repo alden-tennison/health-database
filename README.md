@@ -19,6 +19,6 @@
     where `<donor>` is the donor id and `<recipient>` is the recipient id.  It
     returns a string of "Compatible" if the donor can safely give blood to the
     recipient.  It returns a string of "Not Compatible" if the donor cannot
-    give blood safetly to the recipient.
+    give blood safely to the recipient.
     
     
