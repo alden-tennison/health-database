@@ -93,6 +93,17 @@ def find_correct_patient(patient_id):
     return False
 
 
+@app.route("/get_results/<patient_id>", methods=["GET"])
+def get_results(patient_id):
+    patient_id = int(patient_id)
+    patient = find_correct_patient(patient_id)
+    if patient == False:
+        tests = 0000
+    else:
+        tests = patient["tests"]
+    return "patient results are {}".format(tests)
+
+
 if __name__ == '__main__':
     init_db()
     app.run()
