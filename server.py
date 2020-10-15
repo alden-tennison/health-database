@@ -103,6 +103,78 @@ def get_results(patient_id):
         tests = patient["tests"]
     return "patient results are {}".format(tests)
 
+def check_blood_type(donor, recipient):
+    if donor["blood_type"] == recipient["blood_type"] or donor["blood_type"] == "O-":
+        return True
+
+    elif recipient["blood_type"] == "AB+":
+        return True
+
+    elif recipient["blood_type"] == "O+" and donor["blood_type"] == "O+":
+        return True
+
+    elif recipient["blood_type"] == "A+":
+        if donor["blood_type"] == "A+":
+            return True
+        elif donor["blood_type"] == "A-":
+            return True
+        elif donor["blood_type"] == "O+":
+            return True
+        else:
+            return False
+
+    elif recipient["blood_type"] == "A-" and donor["blood_type"] == "A-":
+        return True
+
+    elif recipient["blood_type"] == "B+":
+        if donor["blood_type"] == "B+":
+            return True
+        elif donor["blood_type"] == "B-":
+            return True
+        elif donor["blood_type"] == "O+":
+            return True
+        else:
+            return False
+
+    elif recipient["blood_type"] == "B-" and donor["blood_type"] == "B-":
+        return True
+
+    elif recipient["blood_type"] == "AB-":
+        if donor["blood_type"] == "AB-":
+            return True
+        elif donor["blood_type"] == "A-":
+            return True
+        elif donor["blood_type"] == "B-":
+            return True
+        else:
+            return False
+
+    else:
+        return False
+
+
+@app.route("/compatible/<donor>/<recipient>", methods=["GET"])
+def get_bt_results(donor, recipient):
+    donor_id = int(donor)
+    recipient_id = int(recipient)
+    donor = find_correct_patient(donor_id)
+    recipient = find_correct_patient(recipient_id)
+    if donor == False and recipient == False:
+        st = "Not valid ID's"
+    elif donor == False:
+        st = "Not a valid donor ID"
+    elif recipient == False:
+        st = "Not a valid recipient ID"
+    else:
+        bt = check_blood_type(donor, recipient)
+        if bt == False:
+            st = "Not a compatible donor"
+            return st
+        else:
+            st = "donor is compatible"
+            return st
+    return st
+
 
 if __name__ == '__main__':
     init_db()
